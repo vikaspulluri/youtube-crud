@@ -1,4 +1,4 @@
-class YoutubeBuilder{
+class VideoBuilder{
     public _name:string = "";
     public _videoUrl:string = "";
     public _category:string = "General";
@@ -29,44 +29,44 @@ class YoutubeBuilder{
         return this._views;
     }
 
-    title(name:string):YoutubeBuilder{
+    title(name:string):VideoBuilder{
         this._name = name;
         return this;
     }
 
-    video(path:string):YoutubeBuilder{
+    video(path:string):VideoBuilder{
         this._videoUrl = path;
         return this;
     }
 
-    categoryType(type:string):YoutubeBuilder{
+    categoryType(type:string):VideoBuilder{
         this._category = type;
         return this;
     }
 
-    videoThumbnails(...images:string[]):YoutubeBuilder{
+    videoThumbnails(...images:string[]):VideoBuilder{
         this._thumbnails = images;
         return this;
     }
 
-    censored(flag:boolean):YoutubeBuilder{
+    censored(flag:boolean):VideoBuilder{
         this._isCensored = flag;
         return this;
     }
 
-    author(uploader:string):YoutubeBuilder{
+    author(uploader:string):VideoBuilder{
         this._uploader = uploader;
         return this;
     }
-    views(views:number):YoutubeBuilder{
+    views(views:number):VideoBuilder{
         this._views = views;
         return this;
     }
-    likes(likes:number):YoutubeBuilder{
+    likes(likes:number):VideoBuilder{
         this._likes = likes;
         return this;
     }
-    dislikes(dislikes:number):YoutubeBuilder{
+    dislikes(dislikes:number):VideoBuilder{
         this._dislikes = dislikes;
         return this;
     }
@@ -86,7 +86,7 @@ class YoutubeDTO {
     public dislikes:number = 0;
     public uploader:string ;
     public _id:number;
-    constructor(builder:YoutubeBuilder){
+    constructor(builder:VideoBuilder){
         this.title = builder._name;
         this._id = builder.ID;
         this.videoUrl = builder._videoUrl;
@@ -178,14 +178,14 @@ class Youtube{
             let index = this.videosList.indexOf(video);
             let vid:any = Object.keys(video)[0];
             if(vid === String(id) && index !== 1){
-                this.videosList[index][vid] = Object.assign(this.videosList[index][vid],updatedObject);
+                this.videosList[index][vid] = (<any>Object).assign(this.videosList[index][vid],updatedObject);
             }
         }
         return this.videosList;
     }
 }
 
-let video1 = new YoutubeBuilder(1001)
+let video1 = new VideoBuilder(1001)
                         .title("Thor")
                         .categoryType("Action")
                         .censored(false)
@@ -195,7 +195,7 @@ let video1 = new YoutubeBuilder(1001)
                         .author('Vikas')
                         .build()
                         .reOrder();
-let video2 = new YoutubeBuilder(1002)
+let video2 = new VideoBuilder(1002)
                         .title("Hulk")
                         .categoryType("Action")
                         .censored(false)
@@ -204,7 +204,7 @@ let video2 = new YoutubeBuilder(1002)
                         .views(7884477946)
                         .build()
                         .reOrder();
-let video3 = new YoutubeBuilder(1003)
+let video3 = new VideoBuilder(1003)
                         .title("Captain")
                         .categoryType("Comic")
                         .censored(false)

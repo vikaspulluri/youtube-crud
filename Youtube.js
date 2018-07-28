@@ -1,5 +1,5 @@
-class YoutubeBuilder {
-    constructor(_id) {
+var VideoBuilder = /** @class */ (function () {
+    function VideoBuilder(_id) {
         this._id = _id;
         this._name = "";
         this._videoUrl = "";
@@ -12,60 +12,81 @@ class YoutubeBuilder {
         this._uploader = "";
         this._id = _id;
     }
-    get ID() {
-        return this._id;
-    }
-    get getDislikes() {
-        return this._dislikes;
-    }
-    get getLikes() {
-        return this._likes;
-    }
-    get getViews() {
-        return this._views;
-    }
-    title(name) {
+    Object.defineProperty(VideoBuilder.prototype, "ID", {
+        get: function () {
+            return this._id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VideoBuilder.prototype, "getDislikes", {
+        get: function () {
+            return this._dislikes;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VideoBuilder.prototype, "getLikes", {
+        get: function () {
+            return this._likes;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VideoBuilder.prototype, "getViews", {
+        get: function () {
+            return this._views;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    VideoBuilder.prototype.title = function (name) {
         this._name = name;
         return this;
-    }
-    video(path) {
+    };
+    VideoBuilder.prototype.video = function (path) {
         this._videoUrl = path;
         return this;
-    }
-    categoryType(type) {
+    };
+    VideoBuilder.prototype.categoryType = function (type) {
         this._category = type;
         return this;
-    }
-    videoThumbnails(...images) {
+    };
+    VideoBuilder.prototype.videoThumbnails = function () {
+        var images = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            images[_i] = arguments[_i];
+        }
         this._thumbnails = images;
         return this;
-    }
-    censored(flag) {
+    };
+    VideoBuilder.prototype.censored = function (flag) {
         this._isCensored = flag;
         return this;
-    }
-    author(uploader) {
+    };
+    VideoBuilder.prototype.author = function (uploader) {
         this._uploader = uploader;
         return this;
-    }
-    views(views) {
+    };
+    VideoBuilder.prototype.views = function (views) {
         this._views = views;
         return this;
-    }
-    likes(likes) {
+    };
+    VideoBuilder.prototype.likes = function (likes) {
         this._likes = likes;
         return this;
-    }
-    dislikes(dislikes) {
+    };
+    VideoBuilder.prototype.dislikes = function (dislikes) {
         this._dislikes = dislikes;
         return this;
-    }
-    build() {
+    };
+    VideoBuilder.prototype.build = function () {
         return new YoutubeDTO(this);
-    }
-}
-class YoutubeDTO {
-    constructor(builder) {
+    };
+    return VideoBuilder;
+}());
+var YoutubeDTO = /** @class */ (function () {
+    function YoutubeDTO(builder) {
         this.numberOfViews = 0;
         this.likes = 0;
         this.dislikes = 0;
@@ -81,84 +102,90 @@ class YoutubeDTO {
         this.numberOfViews = builder.getViews;
     }
     ;
-    toString() {
+    YoutubeDTO.prototype.toString = function () {
         return JSON.stringify(this);
-    }
-    reOrder() {
-        let obj = {};
-        let self = this;
-        for (let key in this) {
+    };
+    YoutubeDTO.prototype.reOrder = function () {
+        var obj = {};
+        var self = this;
+        for (var key in this) {
             if (this.hasOwnProperty(key) && key !== this._id) {
                 obj[key] = this[key];
             }
         }
-        let obj2 = {};
+        var obj2 = {};
         obj2[this._id] = obj;
         return obj2;
-    }
-    updateAuthor(author, obj) {
+    };
+    YoutubeDTO.prototype.updateAuthor = function (author, obj) {
         obj.author = author;
         return obj;
-    }
-    updateTitle(title, obj) {
+    };
+    YoutubeDTO.prototype.updateTitle = function (title, obj) {
         obj.title = title;
         return obj;
-    }
-}
-class Youtube {
-    constructor() {
+    };
+    return YoutubeDTO;
+}());
+var Youtube = /** @class */ (function () {
+    function Youtube() {
         this.videosList = [];
     }
-    createVideo(videoDetails) {
+    Youtube.prototype.createVideo = function (videoDetails) {
         this.videosList.push(videoDetails);
         return this.videosList;
-    }
-    getVideos() {
-        for (let i = 1; i < this.videosList.length + 1; i++) {
-            console.log(`Video - ${i}`);
+    };
+    Youtube.prototype.getVideos = function () {
+        for (var i = 1; i < this.videosList.length + 1; i++) {
+            console.log("Video - " + i);
             console.log(this.videosList[i - 1]);
         }
         return this.videosList;
-    }
-    getVideoDetailsById(id) {
-        for (let video of this.videosList) {
+    };
+    Youtube.prototype.getVideoDetailsById = function (id) {
+        for (var _i = 0, _a = this.videosList; _i < _a.length; _i++) {
+            var video = _a[_i];
             if (Object.keys(video)[0] === String(id)) {
                 return video;
             }
         }
         return {};
-    }
-    getVideoDetailsByTitle(title) {
-        for (let video of this.videosList) {
-            for (let item in video) {
+    };
+    Youtube.prototype.getVideoDetailsByTitle = function (title) {
+        for (var _i = 0, _a = this.videosList; _i < _a.length; _i++) {
+            var video = _a[_i];
+            for (var item in video) {
                 if (video[item].title === title) {
                     return video;
                 }
             }
         }
         return {};
-    }
-    deleteVideoById(id) {
-        for (let video of this.videosList) {
-            let index = this.videosList.indexOf(video);
+    };
+    Youtube.prototype.deleteVideoById = function (id) {
+        for (var _i = 0, _a = this.videosList; _i < _a.length; _i++) {
+            var video = _a[_i];
+            var index = this.videosList.indexOf(video);
             if (Object.keys(video)[0] === String(id) && index !== 1) {
                 this.videosList.splice(index, 1);
             }
         }
         return this.videosList;
-    }
-    updateVideoById(id, updatedObject) {
-        for (let video of this.videosList) {
-            let index = this.videosList.indexOf(video);
-            let vid = Object.keys(video)[0];
+    };
+    Youtube.prototype.updateVideoById = function (id, updatedObject) {
+        for (var _i = 0, _a = this.videosList; _i < _a.length; _i++) {
+            var video = _a[_i];
+            var index = this.videosList.indexOf(video);
+            var vid = Object.keys(video)[0];
             if (vid === String(id) && index !== 1) {
                 this.videosList[index][vid] = Object.assign(this.videosList[index][vid], updatedObject);
             }
         }
         return this.videosList;
-    }
-}
-let video1 = new YoutubeBuilder(1001)
+    };
+    return Youtube;
+}());
+var video1 = new VideoBuilder(1001)
     .title("Thor")
     .categoryType("Action")
     .censored(false)
@@ -168,7 +195,7 @@ let video1 = new YoutubeBuilder(1001)
     .author('Vikas')
     .build()
     .reOrder();
-let video2 = new YoutubeBuilder(1002)
+var video2 = new VideoBuilder(1002)
     .title("Hulk")
     .categoryType("Action")
     .censored(false)
@@ -177,7 +204,7 @@ let video2 = new YoutubeBuilder(1002)
     .views(7884477946)
     .build()
     .reOrder();
-let video3 = new YoutubeBuilder(1003)
+var video3 = new VideoBuilder(1003)
     .title("Captain")
     .categoryType("Comic")
     .censored(false)
@@ -186,7 +213,7 @@ let video3 = new YoutubeBuilder(1003)
     .views(78877946)
     .build()
     .reOrder();
-const youtube = new Youtube();
+var youtube = new Youtube();
 console.log('Initial videos:');
 //Creating videos
 youtube.createVideo(video1);
